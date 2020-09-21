@@ -2,5 +2,5 @@ node {
     paramAValue = "paramAValue"
     paramBValue = "paramBValue"
     build job: 'downstream-freestyle', parameters: [[$class: 'StringParameterValue', name: 'ParamA', value: paramAValue], [$class: 'StringParameterValue', name: 'ParamB', value: paramBValue]]
-    echo "$paramAValue $paramBVlaue"
+    echo "Hello!!! $paramAValue $paramBVlaue"
 }

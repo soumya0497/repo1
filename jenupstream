@@ -1,0 +1,35 @@
+node
+{	
+ try 
+ {
+   
+    stage('Source Checkout') {
+      checkout scm
+      sh "git clean -fdx"
+      commit_id = sh(returnStdout: true, script: "git log -n 1 --pretty=format:'%h'").trim()
+	    
+    }
+        
+        stage('calling downstream job') {
+            def jobBuild = build job: 'downstream pipeline name', propagate: false, parameters: [
+                [$class: 'StringParameterValue', name: 'paramname', value: "give any value"]
+            ]
+            def jobResult = jobBuild.getResult()
+			
+            echo "${jobResult}"
+            if (jobResult == 'SUCCESS') {
+                currentBuild.result = 'SUCCESS'
+            } else {
+                currentBuild.result = 'FAILURE'
+            }
+        } 
+    
+    stage('Notify Phase') {
+	  currentBuild.result = 'SUCCESS'
+    }
+   }
+   catch (err) {
+      echo "${err}"
+      currentBuild.result = 'FAILURE'
+   } 	
+} //node

@@ -11,9 +11,7 @@ node
     }
         
         stage('calling downstream job') {
-            def jobBuild = build job: 'downstream pipeline name', propagate: false, parameters: [
-                [$class: 'StringParameterValue', name: 'paramname', value: "give any value"]
-            ]
+            def jobBuild = build job: 'downstream', propagate: false
             def jobResult = jobBuild.getResult()
 			
             echo "${jobResult}"
